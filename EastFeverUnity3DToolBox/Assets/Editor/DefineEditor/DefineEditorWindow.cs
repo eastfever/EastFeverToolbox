@@ -213,17 +213,33 @@ namespace EastFever
 
         void SaveAndApplyDefineSetting()
         {
-            System.Text.StringBuilder defineBuilder = new System.Text.StringBuilder( 256 );
+            string oldDefineString = PlayerSettings.GetScriptingDefineSymbolsForGroup( _selectedBuildTarget );
+            string[] oldDefines = oldDefineString.Split( ';' );
+            HashSet<string> defineSet = new HashSet<string>( oldDefines );
+
             foreach( KeyValuePair<string, bool> pair in _defineToggleTable )
             {
-                if( pair.Value )
+                if( pair.Value && !defineSet.Contains( pair.Key ) )
                 {
-                    defineBuilder.Append( pair.Key );
-                    defineBuilder.Append( "; " );
+                    // 디파인 관리 툴에서 체크 되었지만 아직 PlayerSetting에서 확인 안되는 #define은 추가.
+                    defineSet.Add( pair.Key );
+                }
+                else if( !pair.Value && defineSet.Contains( pair.Key ) )
+                {
+                    // 디파인 관리 툴에 체크 안 되었지만 PlayerSetting에서 확인 되는 #define은 제거.
+                    defineSet.Remove( pair.Key );
                 }
             }
+
+            System.Text.StringBuilder newDefineBuilder = new System.Text.StringBuilder( 256 );
+            foreach( string defineString in defineSet )
+            {
+                newDefineBuilder.Append( defineString );
+                newDefineBuilder.Append( ";" );
+            }
+
             PlayerSettings.SetScriptingDefineSymbolsForGroup(
-                _selectedBuildTarget, defineBuilder.ToString() );
+                _selectedBuildTarget, newDefineBuilder.ToString() );
         }
 
         void Update()
