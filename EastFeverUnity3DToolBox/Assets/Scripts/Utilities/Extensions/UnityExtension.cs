@@ -39,6 +39,41 @@ namespace EastFever
             return objectListToReturn.ToArray();
         }
 
+        // EaseBack연출 부여와 함께 원래 크기로 되돌린다.
+        public static void ScaleToOneWithEaseBackTween( this GameObject target, float time )
+        {
+            target.transform.localScale = new Vector3( 0.01f, 0.01f, 0.01f );
+            LeanTween
+                .scale( target, Vector3.one, time )
+                .setEase( LeanTweenType.easeInOutBack );
+        }
+
+        // 좀 더 정확한 소수점 표현으로 벡터 문자열을 표시한다.
+        public static string ToStringWithoutCutting( this Vector2 target )
+        {
+            System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder( 128 );
+            stringBuilder.Append( "(" );
+            stringBuilder.Append( target.x.ToString() );
+            stringBuilder.Append( ", " );
+            stringBuilder.Append( target.y.ToString() );
+            stringBuilder.Append( ")" );
+            return stringBuilder.ToString();
+        }
+
+        // 좀 더 정확한 소수점 표현으로 벡터 문자열을 표시한다.
+        public static string ToStringWithoutCutting( this Vector3 target )
+        {
+            System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder( 128 );
+            stringBuilder.Append( "(" );
+            stringBuilder.Append( target.x.ToString() );
+            stringBuilder.Append( ", " );
+            stringBuilder.Append( target.y.ToString() );
+            stringBuilder.Append( ", " );
+            stringBuilder.Append( target.z.ToString() );
+            stringBuilder.Append( ")" );
+            return stringBuilder.ToString();
+        }
+
         private static void PushChildObjectsToList( GameObject targetObject, List<GameObject> targetList )
         {
             targetList.Add( targetObject );
@@ -61,3 +96,4 @@ namespace EastFever
         }
     }
 }
+

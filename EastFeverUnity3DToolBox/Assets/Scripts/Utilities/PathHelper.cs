@@ -153,5 +153,29 @@ namespace EastFever
             System.IO.FileInfo fileInfo = new FileInfo( filePath );
             return fileInfo.Exists;
         }
+
+        public static bool IsFolder( string targetPath )
+        {
+            System.IO.FileAttributes file_attr;
+            try
+            {
+                if( targetPath != "Assets" )
+                {
+                    string absolutePath = Application.dataPath + "/" + targetPath.Replace( "Assets/", "" );
+                    file_attr = System.IO.File.GetAttributes( absolutePath );
+                    if( ( file_attr & System.IO.FileAttributes.Directory ) == System.IO.FileAttributes.Directory )
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch( System.Exception e )
+            {
+                Debug.LogError( "[tk2dSpineImporter/IsFolder]Catched exception - " + e.Message );
+                return false;
+            }
+
+            return false;
+        }
     }
 }
