@@ -175,9 +175,9 @@ public class CircleMaskPlane : MonoBehaviour
     private void RadialCut( Vector2[] xy, float cos, float sin, bool invert, int corner )
     {
         int i0 = corner;
-        int i1 = NGUIMath.RepeatIndex( corner + 1, 4 );
-        int i2 = NGUIMath.RepeatIndex( corner + 2, 4 );
-        int i3 = NGUIMath.RepeatIndex( corner + 3, 4 );
+        int i1 = RepeatIndex( corner + 1, 4 );
+        int i2 = RepeatIndex( corner + 2, 4 );
+        int i3 = RepeatIndex( corner + 3, 4 );
 
         if( ( corner & 1 ) == 1 )
         {
@@ -266,5 +266,5 @@ public class CircleMaskPlane : MonoBehaviour
             _planeIndexArray[ index++ ] = i + 3;
             _planeIndexArray[ index++ ] = i;
         }        
-    }
+    }    
 }
